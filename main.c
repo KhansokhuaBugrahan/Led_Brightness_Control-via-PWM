@@ -21,12 +21,7 @@
 #include <stdbool.h>
 #include "gpio.h"
 #include "utility.h"
-#include "rng.h"
 #include "armcortexm4.h"
-#include "adc.h"
-#include "i2c.h"
-#include "usart.h"
-#include "i2clcd.h"
 #include "timer.h"
 
 
@@ -59,39 +54,24 @@ int main(void)
 
 
 			   GPIO_Handle_t PWM_TIMER3_CH1_PB4 = {  .PORTNAME = GPIOB,
-													.PINCONF.PIN = GPIO_PIN_4,
-													.PINCONF.MODE = GPIO_MODE_ALTARNATE,
-													.PINCONF.OTYPE = GPIO_OTYPE_PP,
-													.PINCONF.OSPEED = GPIO_OSPEED_HIGH,
-													.PINCONF.PUPD = GPIO_PUPD_PU,
-													.PINCONF.AF = AF2
-											 	  };
+								.PINCONF.PIN = GPIO_PIN_4,
+								.PINCONF.MODE = GPIO_MODE_ALTARNATE,
+								.PINCONF.OTYPE = GPIO_OTYPE_PP,
+								.PINCONF.OSPEED = GPIO_OSPEED_HIGH,
+								.PINCONF.PUPD = GPIO_PUPD_PU,
+								.PINCONF.AF = AF2
+							      };
 
 
 				gpioInit(&PWM_TIMER3_CH1_PB4);
 
-				//timerxConfig(TIMER3, 16000, 100); // (1kHz) 1ms counting, 100ms PWM period	10Hz PwM freq
+				 
 				timerxConfig(TIMER3, 160, 100);   	// (100kHz) 10us counting, 1ms PWM period	1kHz PWM freq
 				timer3InterruptEnable();
 				timerxPeripheralEnable(TIMER3);
 
 				timer3PwmEnable(DUTY_CYCLE_0);
 
-
-
-
-
-
-
-				/*
-				 * 1-) PWM Modu seç     CCRM  OC1M    110
-				 * 2-) output-channel seç
-				 * 3-)The user must enable the corresponding preload register by setting
-the OCxPE bit in the TIMx_CCMRx register 3.bit
-
-				TIMx_CNT, TIMx_PSC, TIMx_ARR)
-				 */
-				// blue-led-orange
 				while (1)
 				{
 
