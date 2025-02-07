@@ -16,4 +16,3 @@ However, we want to set it as if it never goes low.
  If we use it with a higher sampling cycle, unexpected behavior occurs in case of not checking the status register.                        
  However, in any case, to check the data is safer.
 
-Khansokhua Bugrahan
