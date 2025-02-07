@@ -21,67 +21,44 @@
 #include <stdbool.h>
 #include "gpio.h"
 #include "utility.h"
-#include "rng.h"
 #include "armcortexm4.h"
-#include "adc.h"
-#include "i2c.h"
-#include "usart.h"
-#include "i2clcd.h"
 #include "timer.h"
-
-
-
-
-
-
+void TIM3_IRQHandler(void)
+{
+	static uint16_t counter = 0;
+	static uint8_t dutyCycle = 10;
+	if(TIMER3->TIMx_SR & (1u << 0))
+	  {
+		  counter++;
+		  TIMER3->TIMx_SR &= ~(1u << 0);
+		  if(counter >= 1000)
+		  {
+			  counter = 0;
+			  TIMER3->TIMx_CCR1 = dutyCycle;
+			  dutyCycle += 10;
+		  }
+		  if(dutyCycle == 110)
+			  	 dutyCycle = 0;
+	  }
+}
 int main(void)
 {
-
-
-
 			   GPIO_Handle_t PWM_TIMER3_CH1_PB4 = {  .PORTNAME = GPIOB,
-													.PINCONF.PIN = GPIO_PIN_4,
-													.PINCONF.MODE = GPIO_MODE_ALTARNATE,
-													.PINCONF.OTYPE = GPIO_OTYPE_PP,
-													.PINCONF.OSPEED = GPIO_OSPEED_HIGH,
-													.PINCONF.PUPD = GPIO_PUPD_PU,
-													.PINCONF.AF = AF2
-											 	  };
-
-			   GPIO_Handle_t ADC_DIMMER_POT_PA0 = {      .PORTNAME = GPIOA,
-													.PINCONF.PIN = GPIO_PIN_0,
-													.PINCONF.MODE = GPIO_MODE_ANALOG,
-													.PINCONF.OTYPE = GPIO_OTYPE_PP,
-													.PINCONF.OSPEED = GPIO_OSPEED_HIGH,
-													.PINCONF.PUPD = GPIO_PUPD_NO,
-													.PINCONF.AF = AFNO
-												  };
-
+								.PINCONF.PIN = GPIO_PIN_4,
+								.PINCONF.MODE = GPIO_MODE_ALTARNATE,
+								.PINCONF.OTYPE = GPIO_OTYPE_PP,
+								.PINCONF.OSPEED = GPIO_OSPEED_HIGH,
+								.PINCONF.PUPD = GPIO_PUPD_PU,
+								.PINCONF.AF = AF2
+								  };
 				gpioInit(&PWM_TIMER3_CH1_PB4);
-				gpioInit(&ADC_DIMMER_POT_PA0);
-
+				 
 				timerxConfig(TIMER3, 160, 100);   	// (100kHz) 10us counting, 1ms PWM period	1kHz PWM freq
+				timer3InterruptEnable();
 				timerxPeripheralEnable(TIMER3);
 				timer3PwmEnable(DUTY_CYCLE_0);
-
-
-				adc1Configuration(ADC_RESOLUTION_12, ADC_MODE_CONTINUOUS_CONV, ADC_CHANNEL_0, ADC_SAMPLING_144_CYCLE);
-				adc1ChannelSequence(ADC_CHANNEL_0, ADC_CHANNEL_SEQUENCE_1);
-				adc1SequenceLength(ADC_CONVERSION_LENGTH_1);
-				adc1Init();
-
-
-
-
-
-
+				 
 				while (1)
 				{
-					uint16_t adcVal = adc1ReadValue();
-				while(!(ADC_1->ADC_SR & (1u << 1)))
-						; // null statement , wait for data to be ready before reading it.
-					uint16_t dutyCycle = (adcVal * 100) / 4095;
-					TIMER3->TIMx_CCR1 = dutyCycle;
 				}
-
 }
