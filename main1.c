@@ -28,22 +28,22 @@ int main(void)
 {
 
 			   GPIO_Handle_t PWM_TIMER3_CH1_PB4 = {  .PORTNAME = GPIOB,
-													.PINCONF.PIN = GPIO_PIN_4,
-													.PINCONF.MODE = GPIO_MODE_ALTARNATE,
-													.PINCONF.OTYPE = GPIO_OTYPE_PP,
-													.PINCONF.OSPEED = GPIO_OSPEED_HIGH,
-													.PINCONF.PUPD = GPIO_PUPD_PU,
-													.PINCONF.AF = AF2
-											 	  };
+								.PINCONF.PIN = GPIO_PIN_4,
+								.PINCONF.MODE = GPIO_MODE_ALTARNATE,
+								.PINCONF.OTYPE = GPIO_OTYPE_PP,
+								.PINCONF.OSPEED = GPIO_OSPEED_HIGH,
+								.PINCONF.PUPD = GPIO_PUPD_PU,
+								.PINCONF.AF = AF2
+							      };
 
-			   GPIO_Handle_t ADC_DIMMER_POT_PA0 = {      .PORTNAME = GPIOA,
-													.PINCONF.PIN = GPIO_PIN_0,
-													.PINCONF.MODE = GPIO_MODE_ANALOG,
-													.PINCONF.OTYPE = GPIO_OTYPE_PP,
-													.PINCONF.OSPEED = GPIO_OSPEED_HIGH,
-													.PINCONF.PUPD = GPIO_PUPD_NO,
-													.PINCONF.AF = AFNO
-												  };
+		           GPIO_Handle_t ADC_DIMMER_POT_PA0 = {  .PORTNAME = GPIOA,
+								.PINCONF.PIN = GPIO_PIN_0,
+								.PINCONF.MODE = GPIO_MODE_ANALOG,
+								.PINCONF.OTYPE = GPIO_OTYPE_PP,
+								.PINCONF.OSPEED = GPIO_OSPEED_HIGH,
+								.PINCONF.PUPD = GPIO_PUPD_NO,
+								.PINCONF.AF = AFNO
+							      };
 
 				gpioInit(&PWM_TIMER3_CH1_PB4);
 				gpioInit(&ADC_DIMMER_POT_PA0);
